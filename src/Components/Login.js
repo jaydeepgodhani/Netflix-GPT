@@ -7,12 +7,11 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../Utils/firebase"
-import { useNavigate } from "react-router-dom";
+import { auth } from "../Utils/firebase";
 import { useDispatch } from "react-redux";
+import {USER_AVATAR} from "../Utils/constants";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(true);
   const [errMsg, setErrMsg] = useState(null);
   const dispatch = useDispatch();
@@ -45,7 +44,6 @@ const Login = () => {
                 dispatch(
                   addUser({ uid: uid, email: email, displayName: displayName })
                 );
-                navigate("/browse");
               })
               .catch((error) => {
                 setErrMsg(error.code + " : " + error.message);
@@ -62,7 +60,6 @@ const Login = () => {
         )
           .then((userCredential) => {
             const user = userCredential.user;
-            navigate("/browse");
           })
           .catch((error) => {
             setErrMsg(error.code + " : " + error.message);
@@ -77,7 +74,7 @@ const Login = () => {
       <div>
         <img
           className="bg-center bg-cover min-w-full min-h-full absolute"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/7ca5b7c7-20aa-42a8-a278-f801b0d65fa1/fb548c0a-8582-43c5-9fba-cd98bf27452f/IN-en-20240326-popsignuptwoweeks-perspective_alpha_website_large.jpg"
+          src={USER_AVATAR}
           alt="bg_img"
         />
       </div>
