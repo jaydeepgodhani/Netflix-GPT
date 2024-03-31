@@ -1,13 +1,25 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../Utils/validate";
+import { addUser } from "../Utils/userSlice";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../Utils/firebase"
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [isSignIn, setIsSignIn] = useState(true);
   const [errMsg, setErrMsg] = useState(null);
+  const dispatch = useDispatch();
 
   const email = useRef(null);
   const password = useRef(null);
+  const username = useRef(null);
 
   const toggleSignIn = () => {
     setIsSignIn(!isSignIn);
@@ -15,7 +27,48 @@ const Login = () => {
 
   const handleSubmitButton = () => {
     const output = checkValidData(email.current.value, password.current.value);
-    if (output != null) setErrMsg(output);
+    if (output) setErrMsg(output)
+    else {
+      if(!isSignIn){
+        createUserWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        )
+          .then((userCredential) => {
+            const user = userCredential.user;
+            updateProfile(user, {
+              displayName: username.current.value
+            })
+              .then(() => {
+                const { uid, email, displayName } = auth.currentUser;
+                dispatch(
+                  addUser({ uid: uid, email: email, displayName: displayName })
+                );
+                navigate("/browse");
+              })
+              .catch((error) => {
+                setErrMsg(error.code + " : " + error.message);
+              })
+          })
+          .catch((error) => {
+            setErrMsg(error.code + " : " + error.message);
+          });
+      } else {
+        signInWithEmailAndPassword(
+          auth,
+          email.current.value,
+          password.current.value
+        )
+          .then((userCredential) => {
+            const user = userCredential.user;
+            navigate("/browse");
+          })
+          .catch((error) => {
+            setErrMsg(error.code + " : " + error.message);
+          });
+      }
+    }
   };
 
   return (
@@ -38,6 +91,7 @@ const Login = () => {
         {!isSignIn && (
           <input
             type="text"
+            ref={username}
             placeholder="Full Name"
             className="p-4 my-4 block w-full bg-gray-800"
           />
