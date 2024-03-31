@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
-import { TMDB_OPTIONS } from "../Utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { addTrailer } from "../Utils/movieSlice";
+import React from "react";
+import { useSelector } from "react-redux";
 import useMovieTrailer from "../hooks/useMovieTrailer";
 
 const VideoBackground = ({ movieId }) => {
