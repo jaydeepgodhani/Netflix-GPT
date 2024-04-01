@@ -6,6 +6,7 @@ const SecondaryCont = () => {
   const nowPlayingMovies = useSelector((store) => store.movies?.nowPlayingMovies);
   const popularMovies = useSelector((store) => store.movies?.popularMovies);
   const topRatedMovies = useSelector(store => store.movies?.topRatedMovies);
+  const upcomingMovies = useSelector(store => store.movies?.upcomingMovies);
 
   return (
     <div className="bg-black">
@@ -19,8 +20,8 @@ const SecondaryCont = () => {
         {topRatedMovies && (
           <MovieList title={"Top rated"} movies={topRatedMovies} />
         )}
-        {nowPlayingMovies && (
-          <MovieList title={"Recommanded"} movies={nowPlayingMovies} />
+        {upcomingMovies && (
+          <MovieList title={"Upcoming"} movies={upcomingMovies} />
         )}
         {nowPlayingMovies && (
           <MovieList title={"Foreign"} movies={nowPlayingMovies} />
