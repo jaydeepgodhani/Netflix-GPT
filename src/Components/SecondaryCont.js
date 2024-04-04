@@ -9,7 +9,7 @@ const SecondaryCont = () => {
   const upcomingMovies = useSelector(store => store.movies?.upcomingMovies);
 
   return (
-    <div className="bg-black">
+    <div className="bg-black md:pt-0 pt-36">
       <div className="-mt-52 pl-8 relative z-10">
         {nowPlayingMovies && (
           <MovieList title={"Now Playing"} movies={nowPlayingMovies} />

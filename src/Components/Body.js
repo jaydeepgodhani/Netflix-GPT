@@ -2,6 +2,7 @@ import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import Browse from './Browse';
+import SearchGPT from './SearchGPT';
 
 const Body = () => {
 
@@ -13,7 +14,11 @@ const Body = () => {
     {
       path: "/browse",
       element: <Browse />,
-    }
+    },
+    {
+      path: "/search",
+      element: <SearchGPT />,
+    },
   ]);
 
   return (
